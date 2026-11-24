@@ -2,6 +2,12 @@
 
 A mobile-first microblog, hosted as **one Cloudflare Worker**: React/Vite static assets + Hono API, Better Auth sessions in D1, R2 images, short-lived KV profile summaries, and idempotent Queue-driven notifications. No external services, Durable Objects, or Workflows.
 
+## Built with pi in Rex
+
+This project was created with [pi](https://github.com/badlogic/pi-mono) using a GPT-6 model in [Rex](https://www.superlogical.com/rex). The screenshot shows the pi coding session alongside MiniSocial and this GitHub repository in Rex panes.
+
+![Pi coding session in Rex with MiniSocial and its GitHub repository open side by side](docs/images/rex-terminalbrowser-pi.png)
+
 ## Local development
 
 Requires Node 20+, pnpm 10+, a Cloudflare account for deployment.
