@@ -51,6 +51,8 @@ For a custom domain, update `AUTH_URL` to the custom-domain origin and redeploy.
 
 ### Google sign-in
 
+Google OAuth sign-in is supported alongside email/password authentication. Once configured, the sign-in screen offers **Continue with Google**; no Google credentials are needed to use email/password sign-in.
+
 Create a Google OAuth client in Google Cloud Console. Add this authorized redirect URI exactly: `https://minisocial.yikaus.workers.dev/api/auth/callback/google` (replace the host if using a custom domain). Then configure the Worker secrets:
 
 ```sh
