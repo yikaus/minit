@@ -1,2 +1,2 @@
-BETTER_AUTH_SECRET=cqrwlYI0o0M+uqg3FsZvleFCkUTQY0BOnYcgC8qgLOg=
+BETTER_AUTH_SECRET=replace-with-a-random-secret
 AUTH_URL=http://localhost:5173
