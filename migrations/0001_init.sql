@@ -1,0 +1,18 @@
+CREATE TABLE user (id TEXT PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL UNIQUE, email_verified INTEGER NOT NULL DEFAULT 0, image TEXT, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL, username TEXT NOT NULL UNIQUE, bio TEXT NOT NULL DEFAULT '');
+CREATE TABLE session (id TEXT PRIMARY KEY, expires_at INTEGER NOT NULL, token TEXT NOT NULL UNIQUE, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL, ip_address TEXT, user_agent TEXT, user_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE);
+CREATE INDEX session_user_idx ON session(user_id);
+CREATE TABLE account (id TEXT PRIMARY KEY, account_id TEXT NOT NULL, provider_id TEXT NOT NULL, user_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, access_token TEXT, refresh_token TEXT, id_token TEXT, access_token_expires_at INTEGER, refresh_token_expires_at INTEGER, scope TEXT, password TEXT, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL);
+CREATE INDEX account_user_idx ON account(user_id);
+CREATE TABLE verification (id TEXT PRIMARY KEY, identifier TEXT NOT NULL, value TEXT NOT NULL, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL);
+CREATE TABLE posts (id TEXT PRIMARY KEY, author_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, body TEXT NOT NULL, parent_id TEXT, media_id TEXT, created_at INTEGER NOT NULL);
+CREATE INDEX posts_time_idx ON posts(created_at, id);
+CREATE INDEX posts_author_time_idx ON posts(author_id, created_at, id);
+CREATE INDEX posts_parent_idx ON posts(parent_id);
+CREATE TABLE follows (follower_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, followed_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, created_at INTEGER NOT NULL, PRIMARY KEY(follower_id, followed_id));
+CREATE INDEX follows_followed_idx ON follows(followed_id);
+CREATE TABLE likes (user_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, post_id TEXT NOT NULL REFERENCES posts(id) ON DELETE CASCADE, created_at INTEGER NOT NULL, PRIMARY KEY(user_id, post_id));
+CREATE INDEX likes_post_idx ON likes(post_id);
+CREATE TABLE media (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, content_type TEXT NOT NULL, created_at INTEGER NOT NULL, attached_at INTEGER);
+CREATE INDEX media_cleanup_idx ON media(attached_at, created_at);
+CREATE TABLE notifications (id TEXT PRIMARY KEY, recipient_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, actor_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, kind TEXT NOT NULL, target_id TEXT NOT NULL, created_at INTEGER NOT NULL, read_at INTEGER, UNIQUE(recipient_id, actor_id, kind, target_id));
+CREATE INDEX notifications_recipient_idx ON notifications(recipient_id, created_at);
